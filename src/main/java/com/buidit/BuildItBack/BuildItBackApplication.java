@@ -1,0 +1,13 @@
+package com.buidit.BuildItBack;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BuildItBackApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BuildItBackApplication.class, args);
+	}
+
+}
