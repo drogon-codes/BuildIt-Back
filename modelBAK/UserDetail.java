@@ -4,6 +4,8 @@
  */
 package com.buidit.BuildItBack.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,19 +13,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "user_detail")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UserDetail.findAll", query = "SELECT u FROM UserDetail u"),
     @NamedQuery(name = "UserDetail.findByUserDetailId", query = "SELECT u FROM UserDetail u WHERE u.userDetailId = :userDetailId"),
@@ -32,8 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserDetail.findByFirstName", query = "SELECT u FROM UserDetail u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "UserDetail.findByLastName", query = "SELECT u FROM UserDetail u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "UserDetail.findByPincode", query = "SELECT u FROM UserDetail u WHERE u.pincode = :pincode"),
-    @NamedQuery(name = "UserDetail.findByState", query = "SELECT u FROM UserDetail u WHERE u.state = :state"),
-    @NamedQuery(name = "UserDetail.findByUserId", query = "SELECT u FROM UserDetail u WHERE u.userId = :userId")})
+    @NamedQuery(name = "UserDetail.findByUserId", query = "SELECT u FROM UserDetail u WHERE u.userId = :userId"),
+    @NamedQuery(name = "UserDetail.findByState", query = "SELECT u FROM UserDetail u WHERE u.state = :state")})
 public class UserDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,34 +46,36 @@ public class UserDetail implements Serializable {
     @Column(name = "user_detail_id")
     private Integer userDetailId;
     @Lob
+    @Size(max = 65535)
     @Column(name = "address")
     private String address;
+    @Size(max = 255)
     @Column(name = "city")
     private String city;
+    @Size(max = 255)
     @Column(name = "company_name")
     private String companyName;
+    @Size(max = 255)
     @Column(name = "first_name")
     private String firstName;
+    @Size(max = 255)
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "pincode")
     private Integer pincode;
+    @Size(max = 255)
     @Column(name = "state")
     private String state;
-    @Basic(optional = false)
-    @Column(name = "user_id")
-    private int userId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    private User userId;
 
     public UserDetail() {
     }
 
     public UserDetail(Integer userDetailId) {
         this.userDetailId = userDetailId;
-    }
-
-    public UserDetail(Integer userDetailId, int userId) {
-        this.userDetailId = userDetailId;
-        this.userId = userId;
     }
 
     public Integer getUserDetailId() {
@@ -137,11 +142,11 @@ public class UserDetail implements Serializable {
         this.state = state;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -167,7 +172,7 @@ public class UserDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "model.UserDetail[ userDetailId=" + userDetailId + " ]";
+        return "entity.UserDetail[ userDetailId=" + userDetailId + " ]";
     }
     
 }

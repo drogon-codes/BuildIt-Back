@@ -5,30 +5,33 @@
 package com.buidit.BuildItBack.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "category")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
     @NamedQuery(name = "Category.findByCategoryId", query = "SELECT c FROM Category c WHERE c.categoryId = :categoryId"),
     @NamedQuery(name = "Category.findByCategoryName", query = "SELECT c FROM Category c WHERE c.categoryName = :categoryName"),
-    @NamedQuery(name = "Category.findByIsActive", query = "SELECT c FROM Category c WHERE c.isActive = :isActive"),
-    @NamedQuery(name = "Category.findByBrandId", query = "SELECT c FROM Category c WHERE c.brandId = :brandId")})
+    @NamedQuery(name = "Category.findByIsActive", query = "SELECT c FROM Category c WHERE c.isActive = :isActive")})
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,24 +40,23 @@ public class Category implements Serializable {
     @Basic(optional = false)
     @Column(name = "category_id")
     private Integer categoryId;
+    @Size(max = 255)
     @Column(name = "category_name")
     private String categoryName;
+    @Size(max = 255)
     @Column(name = "is_active")
     private String isActive;
-    @Basic(optional = false)
-    @Column(name = "brand_id")
-    private int brandId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    private Collection<Product> productCollection;
+    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
+    @ManyToOne(optional = false)
+    private Brand brandId;
 
     public Category() {
     }
 
     public Category(Integer categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Category(Integer categoryId, int brandId) {
-        this.categoryId = categoryId;
-        this.brandId = brandId;
     }
 
     public Integer getCategoryId() {
@@ -81,11 +83,19 @@ public class Category implements Serializable {
         this.isActive = isActive;
     }
 
-    public int getBrandId() {
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    public void setProductCollection(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
+    }
+
+    public Brand getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(int brandId) {
+    public void setBrandId(Brand brandId) {
         this.brandId = brandId;
     }
 
@@ -111,7 +121,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Category[ categoryId=" + categoryId + " ]";
+        return "entity.Category[ categoryId=" + categoryId + " ]";
     }
     
 }

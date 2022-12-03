@@ -11,24 +11,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "cart")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cart.findAll", query = "SELECT c FROM Cart c"),
     @NamedQuery(name = "Cart.findByCartId", query = "SELECT c FROM Cart c WHERE c.cartId = :cartId"),
-    @NamedQuery(name = "Cart.findByQty", query = "SELECT c FROM Cart c WHERE c.qty = :qty"),
-    @NamedQuery(name = "Cart.findByProductId", query = "SELECT c FROM Cart c WHERE c.productId = :productId"),
-    @NamedQuery(name = "Cart.findByUserId", query = "SELECT c FROM Cart c WHERE c.userId = :userId")})
+    @NamedQuery(name = "Cart.findByQty", query = "SELECT c FROM Cart c WHERE c.qty = :qty")})
 public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,14 +37,15 @@ public class Cart implements Serializable {
     @Column(name = "cart_id")
     private Integer cartId;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "qty")
     private int qty;
-    @Basic(optional = false)
-    @Column(name = "product_id")
-    private int productId;
-    @Basic(optional = false)
-    @Column(name = "user_id")
-    private int userId;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @ManyToOne(optional = false)
+    private Product productId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne(optional = false)
+    private User userId;
 
     public Cart() {
     }
@@ -54,11 +54,9 @@ public class Cart implements Serializable {
         this.cartId = cartId;
     }
 
-    public Cart(Integer cartId, int qty, int productId, int userId) {
+    public Cart(Integer cartId, int qty) {
         this.cartId = cartId;
         this.qty = qty;
-        this.productId = productId;
-        this.userId = userId;
     }
 
     public Integer getCartId() {
@@ -77,19 +75,19 @@ public class Cart implements Serializable {
         this.qty = qty;
     }
 
-    public int getProductId() {
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -115,7 +113,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Cart[ cartId=" + cartId + " ]";
+        return "entity.Cart[ cartId=" + cartId + " ]";
     }
     
 }

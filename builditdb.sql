@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2022 at 07:00 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
+-- Generation Time: Dec 03, 2022 at 12:17 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,6 +32,14 @@ CREATE TABLE `brand` (
   `brand_name` varchar(255) DEFAULT NULL,
   `is_active` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`brand_id`, `brand_name`, `is_active`) VALUES
+(1, 'LG', 'Y'),
+(2, 'AOC', 'Y');
 
 -- --------------------------------------------------------
 
@@ -128,19 +136,20 @@ CREATE TABLE `user` (
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL
+  `username` varchar(255) DEFAULT NULL,
+  `role` varchar(5) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `contact`, `email`, `password`, `token`, `user_name`) VALUES
-(1, '9999999999', 'admin@gmail.com', 'admin@123', 'testToken', 'admin12345'),
-(4, '8888888888', 'user@gmail.com', 'user@123', 'testTokenUser', 'user12345'),
-(5, '8888888888', 'user@gmail.com', 'TTRsVSm3FOmg5cmAz1OkPwvefha6f7r+905mIjQvqLBg+wDPlIpdccEYYAzLj1MM1AUP+qkTIBT3\r\ncy/I0lu6Ng==', 'testTokenUser', 'testuser'),
-(6, '8888888888', 'user@gmail.com', 't2XdDtWEder1cQuAzZzRzUv1Rz2NRDYZgjrXEnygIlsLEjYO7SRJl//eZjxO/Q6xnkpeyZFwjBB6\r\nNvQIweHxgg==', 'testTokenUser', 'admin'),
-(7, '8888888888', 'user@gmail.com', 'wgmSWuHAtmgTiyBApYkWUPvDBFDPdFFJGu7bcelvruTq2htgGtYLwAgPASYI+HxSHvUVM035iVNs\r\nyNzWLUwctA==', 'testTokenUser', 'admin');
+INSERT INTO `user` (`user_id`, `contact`, `email`, `password`, `token`, `username`, `role`) VALUES
+(1, '9999999999', 'admin@gmail.com', '$2a$12$1oe0YjWhJNeFAn9Z.D2Z2.fFRuvvOBmwebNI5Zs.4VH0Jxedezt2S', 'testToken', 'admin@123', 'ADMIN'),
+(4, '8888888888', 'user@gmail.com', '$2a$12$ShluLZZ0GdPvwAPywKTHmujEkg.bOPufUaQYMFThEM7hchA3cNO/.', 'testTokenUser', 'user@123', 'USER'),
+(5, '8888888888', 'user@gmail.com', 'TTRsVSm3FOmg5cmAz1OkPwvefha6f7r+905mIjQvqLBg+wDPlIpdccEYYAzLj1MM1AUP+qkTIBT3\r\ncy/I0lu6Ng==', 'testTokenUser', 'testuser', 'USER'),
+(6, '8888888888', 'user@gmail.com', 't2XdDtWEder1cQuAzZzRzUv1Rz2NRDYZgjrXEnygIlsLEjYO7SRJl//eZjxO/Q6xnkpeyZFwjBB6\r\nNvQIweHxgg==', 'testTokenUser', 'admin', 'USER'),
+(7, '8888888888', 'user@gmail.com', 'wgmSWuHAtmgTiyBApYkWUPvDBFDPdFFJGu7bcelvruTq2htgGtYLwAgPASYI+HxSHvUVM035iVNs\r\nyNzWLUwctA==', 'testTokenUser', 'admin', 'USER');
 
 -- --------------------------------------------------------
 
@@ -159,6 +168,13 @@ CREATE TABLE `user_detail` (
   `state` varchar(255) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_detail`
+--
+
+INSERT INTO `user_detail` (`user_detail_id`, `address`, `city`, `company_name`, `first_name`, `last_name`, `pincode`, `state`, `user_id`) VALUES
+(2, 'Test Address', 'Surat', 'Jyoti Technosoft LLP', 'Dev', 'Test', 395009, 'Gujarat', 5);
 
 --
 -- Indexes for dumped tables
@@ -228,7 +244,7 @@ ALTER TABLE `user_detail`
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `build`
@@ -270,7 +286,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

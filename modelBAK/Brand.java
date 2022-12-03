@@ -5,7 +5,9 @@
 package com.buidit.BuildItBack.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,16 +15,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "brand")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Brand.findAll", query = "SELECT b FROM Brand b"),
     @NamedQuery(name = "Brand.findByBrandId", query = "SELECT b FROM Brand b WHERE b.brandId = :brandId"),
@@ -36,10 +38,14 @@ public class Brand implements Serializable {
     @Basic(optional = false)
     @Column(name = "brand_id")
     private Integer brandId;
+    @Size(max = 255)
     @Column(name = "brand_name")
     private String brandName;
+    @Size(max = 255)
     @Column(name = "is_active")
     private String isActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brandId")
+    private Collection<Category> categoryCollection;
 
     public Brand() {
     }
@@ -72,6 +78,14 @@ public class Brand implements Serializable {
         this.isActive = isActive;
     }
 
+    public Collection<Category> getCategoryCollection() {
+        return categoryCollection;
+    }
+
+    public void setCategoryCollection(Collection<Category> categoryCollection) {
+        this.categoryCollection = categoryCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,7 +108,7 @@ public class Brand implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Brand[ brandId=" + brandId + " ]";
+        return "entity.Brand[ brandId=" + brandId + " ]";
     }
     
 }

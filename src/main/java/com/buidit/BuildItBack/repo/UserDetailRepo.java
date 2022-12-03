@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDetailRepo extends JpaRepository<UserDetail, Integer> {
-    List<UserDetail> findByUser(User user);
-    public UserDetail findByUserId(Integer user_id);
+//    List<UserDetail> findByUser(User user);
+    public UserDetail findByUserId(Integer userId);
     Optional<UserDetail> findUserByUserId(Integer userId);
 }

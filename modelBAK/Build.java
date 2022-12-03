@@ -11,24 +11,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "build")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Build.findAll", query = "SELECT b FROM Build b"),
-    @NamedQuery(name = "Build.findByBuildId", query = "SELECT b FROM Build b WHERE b.buildId = :buildId"),
-    @NamedQuery(name = "Build.findByFactorId", query = "SELECT b FROM Build b WHERE b.factorId = :factorId"),
-    @NamedQuery(name = "Build.findByProductId", query = "SELECT b FROM Build b WHERE b.productId = :productId"),
-    @NamedQuery(name = "Build.findByUserId", query = "SELECT b FROM Build b WHERE b.userId = :userId")})
+    @NamedQuery(name = "Build.findByBuildId", query = "SELECT b FROM Build b WHERE b.buildId = :buildId")})
 public class Build implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,28 +34,21 @@ public class Build implements Serializable {
     @Basic(optional = false)
     @Column(name = "build_id")
     private Integer buildId;
-    @Basic(optional = false)
-    @Column(name = "factor_id")
-    private int factorId;
-    @Basic(optional = false)
-    @Column(name = "product_id")
-    private int productId;
-    @Basic(optional = false)
-    @Column(name = "user_id")
-    private int userId;
+    @JoinColumn(name = "factor_id", referencedColumnName = "factor_id")
+    @ManyToOne(optional = false)
+    private Factor factorId;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @ManyToOne(optional = false)
+    private Product productId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne(optional = false)
+    private User userId;
 
     public Build() {
     }
 
     public Build(Integer buildId) {
         this.buildId = buildId;
-    }
-
-    public Build(Integer buildId, int factorId, int productId, int userId) {
-        this.buildId = buildId;
-        this.factorId = factorId;
-        this.productId = productId;
-        this.userId = userId;
     }
 
     public Integer getBuildId() {
@@ -69,27 +59,27 @@ public class Build implements Serializable {
         this.buildId = buildId;
     }
 
-    public int getFactorId() {
+    public Factor getFactorId() {
         return factorId;
     }
 
-    public void setFactorId(int factorId) {
+    public void setFactorId(Factor factorId) {
         this.factorId = factorId;
     }
 
-    public int getProductId() {
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -115,7 +105,7 @@ public class Build implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Build[ buildId=" + buildId + " ]";
+        return "entity.Build[ buildId=" + buildId + " ]";
     }
     
 }

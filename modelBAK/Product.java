@@ -5,32 +5,35 @@
 package com.buidit.BuildItBack.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author admin
+ * @author c computer
  */
 @Entity
 @Table(name = "product")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
     @NamedQuery(name = "Product.findByProductId", query = "SELECT p FROM Product p WHERE p.productId = :productId"),
-    @NamedQuery(name = "Product.findByModelNo", query = "SELECT p FROM Product p WHERE p.modelNo = :modelNo"),
-    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice"),
     @NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
-    @NamedQuery(name = "Product.findByCategoryId", query = "SELECT p FROM Product p WHERE p.categoryId = :categoryId")})
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
+    @NamedQuery(name = "Product.findByModelNo", query = "SELECT p FROM Product p WHERE p.modelNo = :modelNo")})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,29 +42,31 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "product_id")
     private Integer productId;
-    @Lob
-    @Column(name = "description")
-    private String description;
-    @Column(name = "model_no")
-    private String modelNo;
-    @Column(name = "price")
-    private Integer price;
+    @Size(max = 255)
     @Column(name = "product_name")
     private String productName;
-    @Basic(optional = false)
-    @Column(name = "category_id")
-    private int categoryId;
+    @Column(name = "price")
+    private Integer price;
+    @Size(max = 255)
+    @Column(name = "model_no")
+    private String modelNo;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    @ManyToOne(optional = false)
+    private Category categoryId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
+    private Collection<Build> buildCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
+    private Collection<Cart> cartCollection;
 
     public Product() {
     }
 
     public Product(Integer productId) {
         this.productId = productId;
-    }
-
-    public Product(Integer productId, int categoryId) {
-        this.productId = productId;
-        this.categoryId = categoryId;
     }
 
     public Integer getProductId() {
@@ -72,20 +77,12 @@ public class Product implements Serializable {
         this.productId = productId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getModelNo() {
-        return modelNo;
-    }
-
-    public void setModelNo(String modelNo) {
-        this.modelNo = modelNo;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Integer getPrice() {
@@ -96,20 +93,44 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getModelNo() {
+        return modelNo;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setModelNo(String modelNo) {
+        this.modelNo = modelNo;
     }
 
-    public int getCategoryId() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Category getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Category categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Collection<Build> getBuildCollection() {
+        return buildCollection;
+    }
+
+    public void setBuildCollection(Collection<Build> buildCollection) {
+        this.buildCollection = buildCollection;
+    }
+
+    public Collection<Cart> getCartCollection() {
+        return cartCollection;
+    }
+
+    public void setCartCollection(Collection<Cart> cartCollection) {
+        this.cartCollection = cartCollection;
     }
 
     @Override
@@ -134,7 +155,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Product[ productId=" + productId + " ]";
+        return "entity.Product[ productId=" + productId + " ]";
     }
     
 }
