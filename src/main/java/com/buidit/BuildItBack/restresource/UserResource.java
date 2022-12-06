@@ -49,11 +49,11 @@ public class UserResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/login/")
-    public ResponseEntity<User> login(@RequestBody User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User users =userService.login(user);
-        return new ResponseEntity<>(users, HttpStatus.OK);
-//        return "Hello";
-    }
+//    @PostMapping("/login/")
+//    public ResponseEntity<User> login(@RequestBody User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+//        User users =userService.login(user);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+////        return "Hello";
+//    }
 
 }

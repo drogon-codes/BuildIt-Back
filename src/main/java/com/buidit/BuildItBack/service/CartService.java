@@ -4,9 +4,11 @@ import com.buidit.BuildItBack.exception.UserNotFoundException;
 import com.buidit.BuildItBack.model.Cart;
 import com.buidit.BuildItBack.repo.CartRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CartService {
     private final CartRepo cartRepo;
     @Autowired

@@ -2,15 +2,19 @@ package com.buidit.BuildItBack.restresource;
 
 import com.buidit.BuildItBack.model.*;
 import com.buidit.BuildItBack.service.*;
+import org.aspectj.bridge.MessageUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.json.JsonObject;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/admin")
 public class AdminRestResouce {
     private final UserService userService;
@@ -40,6 +44,11 @@ public class AdminRestResouce {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping("/adminAuth")
+    public ResponseEntity<String> userIsFound(User user){
+        String message = userService.findUser(user);
+        return new ResponseEntity<>(message,HttpStatus.OK);
+    }
     @GetMapping("/find/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Integer userId){
         User users = userService.findUserById(userId);
@@ -108,7 +117,7 @@ public class AdminRestResouce {
         return new ResponseEntity<>(brands, HttpStatus.OK);
     }
 
-    @GetMapping("/find/{brandId}")
+    @GetMapping("/findBrand/{brandId}")
     public ResponseEntity<Brand> getBrandById(@PathVariable("brandId") Integer brandId){
         Brand brand = brandService.findByBrandId(brandId);
         return new ResponseEntity<>(brand, HttpStatus.OK);

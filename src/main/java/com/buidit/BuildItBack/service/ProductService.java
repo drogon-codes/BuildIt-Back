@@ -4,9 +4,11 @@ import com.buidit.BuildItBack.model.Factor;
 import com.buidit.BuildItBack.model.Product;
 import com.buidit.BuildItBack.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductService {
     private final ProductRepo productRepo;
     @Autowired

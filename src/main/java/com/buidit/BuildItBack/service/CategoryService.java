@@ -4,9 +4,11 @@ import com.buidit.BuildItBack.exception.UserNotFoundException;
 import com.buidit.BuildItBack.model.Category;
 import com.buidit.BuildItBack.repo.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategoryService {
     private final CategoryRepo categoryRepo;
     @Autowired

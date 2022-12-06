@@ -5,9 +5,11 @@ import com.buidit.BuildItBack.model.Brand;
 import com.buidit.BuildItBack.model.Build;
 import com.buidit.BuildItBack.repo.BuildRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BuildService {
     private final BuildRepo buildRepo;
     @Autowired
